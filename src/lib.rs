@@ -53,9 +53,9 @@ pub struct Color(u8,u8,u8);
         Color(r, g, b)
     }
 
-    const GREEN:Color = Color{0:0, 1:255, 2:0};
-    const RED:Color = Color{0:0, 1:255, 2:0};
-    const BLUE:Color = Color{0:0, 1:255, 2:0};
+    pub const GREEN:Color = Color{0:0, 1:255, 2:0};
+    pub const RED:Color = Color{0:0, 1:255, 2:0};
+    pub const BLUE:Color = Color{0:0, 1:255, 2:0};
  }
  
  #[derive(Serialize, Deserialize, Debug)]
