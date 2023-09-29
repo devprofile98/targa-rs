@@ -52,6 +52,10 @@ pub struct Color(u8,u8,u8);
     pub fn bgr(r: u8, g: u8, b: u8) -> Color {
         Color(r, g, b)
     }
+
+    const GREEN:Color = Color{0:0, 1:255, 2:0};
+    const RED:Color = Color{0:0, 1:255, 2:0};
+    const BLUE:Color = Color{0:0, 1:255, 2:0};
  }
  
  #[derive(Serialize, Deserialize, Debug)]
@@ -157,6 +161,11 @@ pub struct Color(u8,u8,u8);
 //     image 
 //  }
 
+    pub fn fill(&mut self, color: &Color) {
+        for i in self.data.iter_mut() {
+            *i = color.clone();
+        }
+    }
 
 }
 
