@@ -76,6 +76,25 @@ impl std::ops::MulAssign<f32> for Color {
     }
 }
 
+impl std::ops::AddAssign for Color {
+    fn add_assign(&mut self, rhs: Self) {
+        self.0 = (self.0 + rhs.0).min(255);
+        self.1 = (self.1 + rhs.1).min(255);
+        self.2 = (self.2 + rhs.2).min(255);
+    }
+}
+
+impl std::ops::Add for Color {
+    type Output = Color;
+    fn add(self, rhs: Self) -> Self::Output {
+        Color::rgb(
+            (self.0 + rhs.0).min(255),
+            (self.1 + rhs.1).min(255),
+            (self.2 + rhs.2).min(255),
+        )
+    }
+}
+
 impl std::ops::Mul<f32> for Color {
     type Output = Color;
     fn mul(self, rhs: f32) -> Self::Output {
