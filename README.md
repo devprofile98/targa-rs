@@ -3,6 +3,10 @@ library to work with ``TARGA`` ``[.tga]`` format in rust
 
 ### Create a .tga image
     let mut image  = TargaImage::new(500, 500);
+    // or load the image
+    if let Ok(image) = TargaImage::load("path_to_image.tga") {
+        .....
+    }
 ### Change pixel values
     image.set_pixel(200, 300, &color);
     image[6000] = color.clone();
