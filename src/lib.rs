@@ -87,7 +87,7 @@ impl std::ops::AddAssign for Color {
 impl std::ops::Add for Color {
     type Output = Color;
     fn add(self, rhs: Self) -> Self::Output {
-        Color::rgb(
+        Color::bgr(
             (self.0 + rhs.0).min(255),
             (self.1 + rhs.1).min(255),
             (self.2 + rhs.2).min(255),
@@ -99,7 +99,7 @@ impl std::ops::Mul<f32> for Color {
     type Output = Color;
     fn mul(self, rhs: f32) -> Self::Output {
         if rhs <= 1.0 {
-            Color::rgb(
+            Color::bgr(
                 (self.0 as f32 * rhs) as u8,
                 (self.1 as f32 * rhs) as u8,
                 (self.2 as f32 * rhs) as u8,
