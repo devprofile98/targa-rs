@@ -66,6 +66,31 @@ impl Color {
     pub const BLUE: Color = Color { 0: 0, 1: 255, 2: 0 };
 }
 
+impl std::ops::MulAssign<f32> for Color {
+    fn mul_assign(&mut self, rhs: f32) {
+        if rhs <= 1.0 {
+            self.0 = (self.0 as f32 * rhs) as u8;
+            self.1 = (self.1 as f32 * rhs) as u8;
+            self.2 = (self.2 as f32 * rhs) as u8;
+        }
+    }
+}
+
+impl std::ops::Mul<f32> for Color {
+    type Output = Color;
+    fn mul(self, rhs: f32) -> Self::Output {
+        if rhs <= 1.0 {
+            Color::rgb(
+                (self.0 as f32 * rhs) as u8,
+                (self.1 as f32 * rhs) as u8,
+                (self.2 as f32 * rhs) as u8,
+            )
+        } else {
+            self.clone()
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TargaImage {
     header: TgaHeader,
