@@ -12,6 +12,10 @@ use std::{
     usize,
 };
 
+mod errors;
+
+type Result<T> = std::result::Result<T, Box<dyn Error>>;
+
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct TgaHeader {
     pub id_length: u8,
@@ -127,10 +131,13 @@ impl TargaImage {
         self.header.data_type_code = code;
     }
 
-    pub fn save_file(&self, path: &str) -> Result<usize, Box<dyn Error>> {
+    pub fn save_file(&self, path: &str) -> Result<usize> {
         let path = Path::new(path);
         let file = match File::create(&path) {
-            Err(why) => panic!("couldn't open {}: {}", path.display(), why),
+            // Err(why) => panic!("couldn't open {}: {}", path.display(), why),
+            Err(why) => {
+                return Err(errors::TgError::IO(why).into());
+            }
             Ok(file) => file,
         };
 
@@ -196,10 +203,11 @@ impl TargaImage {
         &self.header
     }
 
-    pub fn load(path: &str) -> Result<TargaImage, String> {
+    pub fn load(path: &str) -> Result<TargaImage> {
         let path = Path::new(path);
         let file = match File::open(&path) {
-            Err(_why) => return Err(format!("Failed to open the file {}", _why)),
+            // Err(_why) => return Err(format!("Failed to open the file {}", _why)),
+            Err(_why) => return Err(errors::TgError::IO(_why).into()),
             Ok(file) => file,
         };
 
@@ -214,7 +222,7 @@ impl TargaImage {
         if let Ok(size) = buf.read_to_end(&mut data_buf) {
             println!("No problem reading the file this size {}", size);
         } else {
-            return Err("Problem reading the file".to_owned());
+            return Err(errors::TgError::Serializing.into());
         }
 
         if _header.data_type_code == 10 {
@@ -251,7 +259,7 @@ impl TargaImage {
                 n += 3;
             }
         } else {
-            return Err("data type code is not supported!".to_owned());
+            return Err(errors::TgError::Decoding.into());
         }
         Ok(image)
     }
